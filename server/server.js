@@ -8,7 +8,10 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.get('/', (req, res) => res.render('index'))
 var port = 3000
 
-
+const transformFacebookProfile = (profile) => ({
+    name: profile.name,
+    avatar: profile.picture.data.url,
+  });
 //
 var passport = require('passport')
 , FacebookStrategy = require('passport-facebook').Strategy;
@@ -17,7 +20,10 @@ passport.use(new FacebookStrategy({
     clientID: '340100819812558',
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
     callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback"
-  }
+  },
+  async (accessToken, refreshToken, profile, done)
+  // Return done callback and pass transformed user object
+  => done(null, transformFacebookProfile(profile._json))
 //   function(accessToken, refreshToken, profile, cb) {
 //     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
 //       return cb(err, user);
@@ -25,6 +31,16 @@ passport.use(new FacebookStrategy({
 //   }
 ));
  
+passport.serializeUser((user, done) => done(null, user));
+// Deserialize user from the sessions
+passport.deserializeUser((user, done) => done(null, user));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.enable('trust proxy');
+const express_enforces_ssl = require('express-enforces-ssl');
+app.use(express_enforces_ssl());
+
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
