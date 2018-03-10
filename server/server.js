@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 const path = require('path');
-
+var passport = require('passport')
+import FacebookStrategy from 'passport-facebook';
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 
@@ -13,8 +14,8 @@ const transformFacebookProfile = (profile) => ({
     avatar: profile.picture.data.url,
   });
 //
-var passport = require('passport')
-, FacebookStrategy = require('passport-facebook').Strategy;
+
+
 
 passport.use(new FacebookStrategy({
     clientID: '340100819812558',
