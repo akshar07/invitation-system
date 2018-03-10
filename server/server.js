@@ -20,7 +20,8 @@ const transformFacebookProfile = (profile) => ({
 passport.use(new FacebookStrategy({
     clientID: '340100819812558',
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
-    callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback"
+    callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback",
+    profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
   },
   async (accessToken, refreshToken, profile, done) => done(null, transformFacebookProfile(profile._json))
 //   function(accessToken, refreshToken, profile, cb) {
