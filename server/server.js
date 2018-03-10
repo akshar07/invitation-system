@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const path = require('path');
 var passport = require('passport')
-import FacebookStrategy from 'passport-facebook';
+const FacebookStrategy = require('passport-facebook').Strategy;
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 
