@@ -52,7 +52,7 @@ passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { successRedirect: '/',
-failureRedirect: '/login' }));
+failureRedirect: '/auth/facebook' }));
 
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);
