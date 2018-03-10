@@ -3,6 +3,8 @@ const app = express()
 const path = require('path');
 var passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy;
+
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 
@@ -46,7 +48,7 @@ app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
 
-app.get('/', (req, res) => res.render('index'))
+app.get('/', (req, res) => res.render('index.ejs'))
 
 app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { successRedirect: '/home',
