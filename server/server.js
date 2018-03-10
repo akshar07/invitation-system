@@ -5,7 +5,7 @@ const path = require('path');
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 
-app.get('/', (req, res) => res.render('index'))
+
 var port = 3000
 
 const transformFacebookProfile = (profile) => ({
@@ -28,6 +28,11 @@ passport.use(new FacebookStrategy({
 //     });
 //   }
 ));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
  
 passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
@@ -39,6 +44,7 @@ app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
 
+app.get('/', (req, res) => res.render('index'))
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
