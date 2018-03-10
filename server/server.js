@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const path = require('path');
 var passport = require('passport')
+var shortid = require('shortid');
 const FacebookStrategy = require('passport-facebook').Strategy;
 
 app.set('view engine', 'ejs');
@@ -17,20 +18,36 @@ const transformFacebookProfile = (profile) => ({
   });
 //
 
+//db
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at timestamp with time zone NOT NULL DEFAULT current_timestamp, updated_at timestamp NOT NULL DEFAULT current_timestamp, senderId TEXT, receiverId TEXT);
+                        CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT)`;
 
 
+//shortid
 passport.use(new FacebookStrategy({
     clientID: '340100819812558',
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
     callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback",
     profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
   },
-  async (accessToken, refreshToken, profile, done) => done(null, transformFacebookProfile(profile._json))
-//   function(accessToken, refreshToken, profile, cb) {
-//     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-//       return cb(err, user);
-//     });
-//   }
+  function(accessToken, refreshToken, profile, done) {
+    client.query('SELECT link FROM users WHERE email=profile.email',(err,res)=>{
+        if(err){console.log(err)}
+        if(res){ done(null, res);}
+        else{
+            let shortdId= shortid.generate();
+            client.query(`INSERT INTO users (name, link, email) VALUES (${profile.name},${shortId},${profile.email})`)
+        }
+    })
+  }
 ));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -48,7 +65,16 @@ app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
 
-app.get('/', (req, res) => res.render('index'))
+app.get('/', (req, res) =>{ 
+    client.query(db_creation_string, (err, res) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(res)
+        }
+    });
+    res.render('index')
+})
 
 app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { successRedirect: '/home',
@@ -56,9 +82,10 @@ failureRedirect: '/auth/facebook' }))
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
-app.get('/home',(req,res)=>res.render('home', {
-    user : req.user // get the user out of session and pass to template
-}))
+app.get('/home',(req,res)=>{
+
+    res.render('home')
+})
 
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);

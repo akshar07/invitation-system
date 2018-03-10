@@ -15,7 +15,8 @@
     "nodemon": "^1.14.12",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
-    "pg": "^7.4.1"
+    "pg": "^7.4.1",
+    "shortid": "^2.2.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
