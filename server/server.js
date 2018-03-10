@@ -56,7 +56,9 @@ failureRedirect: '/auth/facebook' }))
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
-app.get('/home',(req,res)=>res.render('home'))
+app.get('/home',(req,res)=>res.render('home',, {
+    user : req.user // get the user out of session and pass to template
+}))
 
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);
