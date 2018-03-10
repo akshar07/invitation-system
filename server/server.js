@@ -21,9 +21,7 @@ passport.use(new FacebookStrategy({
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
     callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback"
   },
-  async (accessToken, refreshToken, profile, done)
-  // Return done callback and pass transformed user object
-  => done(null, transformFacebookProfile(profile._json))
+  async (accessToken, refreshToken, profile, done) => done(null, transformFacebookProfile(profile._json))
 //   function(accessToken, refreshToken, profile, cb) {
 //     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
 //       return cb(err, user);
