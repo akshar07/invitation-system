@@ -48,7 +48,7 @@ app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
 
-app.get('/', (req, res) => res.render('index.ejs'))
+app.get('/', (req, res) => res.render('index'))
 
 app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { successRedirect: '/home',
@@ -56,7 +56,7 @@ failureRedirect: '/auth/facebook' }))
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
-app.get('/home',(req,res)=>res.render('home.ejs'))
+app.get('/home',(req,res)=>res.render('home'))
 
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);
