@@ -10,16 +10,16 @@ var port = 3000
 
 
 //
-var passport = require('passport')
-, FacebookStrategy = require('passport-facebook').Strategy;
+// var passport = require('passport')
+// , FacebookStrategy = require('passport-facebook').Strategy;
 
-passport.use(new FacebookStrategy({
-  clientID: "340100819812558",
-  clientSecret: "534199fb0a8251d6de3c0bd16bdb7914",
-  callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback"
-}
+// passport.use(new FacebookStrategy({
+//   clientID: "340100819812558",
+//   clientSecret: "534199fb0a8251d6de3c0bd16bdb7914",
+//   callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback"
+// }
 
-));
+// ));
 
 
 app.listen(port, function() {
