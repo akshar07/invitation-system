@@ -56,7 +56,7 @@ failureRedirect: '/auth/facebook' }))
 app.get('/auth/facebook',
 passport.authenticate('facebook'));
 
-app.get('/home',(req,res)=>res.render('home.html'))
+app.get('/home',(req,res)=>res.render('home.ejs'))
 
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);
