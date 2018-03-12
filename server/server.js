@@ -79,7 +79,7 @@ passport.authenticate('facebook', { successRedirect: '/home',
 failureRedirect: '/auth/facebook' }))
 
 app.get('/auth/facebook',
-passport.authenticate('facebook',{ scope :'email'}));
+passport.authenticate('facebook'));
 
 app.get('/home',(req,res)=>{
 
