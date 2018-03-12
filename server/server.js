@@ -39,7 +39,8 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
   },
   function(accessToken, refreshToken, profile, done) {
-    client.query('SELECT link FROM users WHERE email=profile.email',(err,res)=>{
+    console.log("done")
+    client.query(`SELECT link FROM users WHERE email=${profile.email}`,(err,res)=>{
         if(err){console.log(err)}
         if(res){ done(null, res);}
         else{
@@ -84,7 +85,7 @@ passport.authenticate('facebook'));
 
 app.get('/home',(req,res)=>{
 
-    res.render('index')
+    res.render('home')
 })
 
 app.listen(process.env.PORT, function() {
