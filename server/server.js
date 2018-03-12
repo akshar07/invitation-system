@@ -28,7 +28,7 @@ const client = new Client({
 
 client.connect();
 const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at timestamp with time zone NOT NULL DEFAULT current_timestamp, updated_at timestamp NOT NULL DEFAULT current_timestamp, senderId TEXT, receiverId TEXT);
-                        CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT)`;
+                        CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
 
 
 //shortid
@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     console.log("done")
-    client.query(`SELECT * FROM users`,(err,res)=>{
+    client.query(`SELECT * FROM users WHERE email=${profile.email}`,(err,res)=>{
         if(err){console.log(err)}
         if(res){ done(null, res);}
         else{
