@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
-    client.query(`SELECT name FROM users WHERE email = ${profile.email}`,(err,res)=>{
+    client.query(`SELECT * FROM users`,(err,res)=>{
         if(err){console.log(err)}
         if(res){ done(null, res);}
         else{
