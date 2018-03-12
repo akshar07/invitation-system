@@ -80,8 +80,9 @@ app.get('/', (req, res) =>{
 app.get('/auth/facebook/callback',
 passport.authenticate('facebook', { successRedirect: '/home',
 failureRedirect: '/auth/facebook' }))
+
 app.get('/auth/facebook',
-passport.authenticate('facebook'));
+passport.authenticate({ scope : 'email' },'facebook'));
 
 app.get('/home',(req,res)=>{
 
