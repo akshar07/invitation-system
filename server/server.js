@@ -37,7 +37,8 @@ passport.use(new FacebookStrategy({
     clientID: '340100819812558',
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
     callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback",
-    profileFields: ['id', 'email', 'gender']
+    profileFields: ['id', 'email', 'gender'],
+    enableProof: true
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
