@@ -36,7 +36,7 @@ passport.use(new FacebookStrategy({
     clientID: '340100819812558',
     clientSecret: '534199fb0a8251d6de3c0bd16bdb7914',
     callbackURL: "https://invitation-system.herokuapp.com/auth/facebook/callback",
-    profileFields: ['id','displayName','emails']
+    profileFields: ['id', 'emails', 'first_name', 'last_name', 'gender']
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
@@ -82,7 +82,7 @@ passport.authenticate('facebook', { successRedirect: '/home',
 failureRedirect: '/auth/facebook' }))
 
 app.get('/auth/facebook',
-passport.authenticate('facebook',{ scope : ['email','read_stream'] }));
+passport.authenticate('facebook',{ scope : ['public_profile', 'email'] }));
 
 app.get('/home',(req,res)=>{
 
