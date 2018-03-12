@@ -84,7 +84,7 @@ passport.authenticate('facebook'));
 
 app.get('/home',(req,res)=>{
 
-    res.render('home')
+    res.render('index')
 })
 
 app.listen(process.env.PORT, function() {
