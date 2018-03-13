@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     let pro_email=profile.emails[0].value;
-    client.query(`SELECT link FROM users where email=${pro_email}`,(err,res)=>{
+    client.query(`SELECT link FROM users WHERE email=${pro_email}`,(err,res)=>{
         if(err){console.log(err)}
         if(res){ done(null, res);}
         else{
