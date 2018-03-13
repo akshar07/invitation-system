@@ -22,12 +22,17 @@
 
 </div>
 <script>
+    var axios=require('axios');
     function invite(){
         let name=document.getElementById('name').innerHTML;
         let link=document.getElementById('link').innerHTML;
         let inviteTo=document.getElementById('invite_mail').value;
 
-        alert(name + link + inviteTo)
+        axios.post('/invite',{
+            name:name,
+            link:link,
+            to:inviteTo
+        }).then((res)=>console.log(res));
     }
 </script>
 </body>

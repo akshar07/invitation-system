@@ -99,6 +99,10 @@ app.get('/home',isLoggedIn,(req,res)=>{
       email:req.user.rows[0].email
     })
 })
+app.post('/invite',(req,res)=>{
+  console.log(req.body.name)
+  res.send(req.body.link);
+})
 function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated())
       // if user is authenticated in the session, carry on
