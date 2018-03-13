@@ -45,13 +45,12 @@ passport.use(new FacebookStrategy({
    
     let links=client.query(`SELECT link FROM users WHERE email='${pro_email}'`,(err,res)=>{
         if(err){console.log(err)}
-        if(res){ done(null, res);}
+        if(res){console.log(res); done(null, res);}
         else{
             let shortId= shortid.generate();
             client.query(`INSERT INTO users (name, link, email) VALUES (${profile.displayName},${shortId},${pro_email})`)
         }
     })
-    console.log(links)
   }
 ));
 app.use(function(req, res, next) {
