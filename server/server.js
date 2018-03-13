@@ -5,6 +5,7 @@ const path = require('path');
 var passport = require('passport')
 var shortid = require('shortid');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const bodyParser=require('body-parser')
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client'));
@@ -72,6 +73,7 @@ app.use(function(req, res, next) {
 app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
+app.use(express.bodyParser());
 
 app.get('/', (req, res) =>{ 
     client.query(db_creation_string, (err, res) => {
@@ -100,8 +102,8 @@ app.get('/home',isLoggedIn,(req,res)=>{
     })
 })
 app.post('/invite',(req,res)=>{
-  console.log(req.body)
-  res.send(req.body);
+  console.log(req.body.name)
+  res.send(req.body.link);
 })
 function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated())
