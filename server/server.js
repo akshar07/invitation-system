@@ -47,12 +47,12 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     let pro_email=profile.emails[0].value;
-    client.query(`SELECT link FROM users WHERE email='${pro_email}'`,(err,res)=>{
+    client.query(`SELECT * FROM users WHERE email='${pro_email}'`,(err,res)=>{
         if(err){console.log(err)}
         if(res.rows.length >=1){console.log("ran"); done(null, res);}
         else{ 
           console.log("yep");
-            let shortId=`${pro_email}_${shortid.generate()}`;
+            let shortId=shortid.generate();
             client.query(`INSERT INTO users (name, link, email) VALUES ('${profile.displayName}','${shortId}','${pro_email}')`,(err,res)=>{
               if(err){console.log(err)}
               else{
@@ -92,8 +92,9 @@ app.get('/auth/facebook',
 passport.authenticate('facebook',{scope:'email'}));
 
 app.get('/home',isLoggedIn,(req,res)=>{
+  console.log(req.user)
     res.render('home',{
-      user : req.user.rows[0].link
+      
     })
 })
 function isLoggedIn(req, res, next) {
