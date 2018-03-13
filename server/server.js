@@ -117,6 +117,12 @@ app.post('/invite',(req,res)=>{
   })
   
 })
+app.get('/myInvitations',(res,res)=>{
+  client.query(`SELECT * from invitations where senderId='Akshar Takle'`,(err,doc)=>{
+    if(err){console.log(err)}
+    else{console.log(doc);res.send(doc)}
+  })
+})
 function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated())
       // if user is authenticated in the session, carry on
