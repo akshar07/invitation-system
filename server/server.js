@@ -19,7 +19,7 @@ const client = new Client({
 });
 
 client.connect();
-const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at timestamp with time zone NOT NULL DEFAULT current_timestamp, updated_at timestamp NOT NULL DEFAULT current_timestamp, senderId TEXT, receiverId TEXT);
+const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, senderId TEXT, sendermsg TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
 
 app.use(session({
@@ -105,8 +105,17 @@ app.get('/home',isLoggedIn,(req,res)=>{
     })
 })
 app.post('/invite',(req,res)=>{
-  console.log(req.body.name)
-  res.send(req.body.link);
+  let sendeId=req.body.name, sendermsg="Hi you have been invited", receiverId=req.body.to;
+  let current= new Date().toLocaleDateString();
+  client.query(`INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,receiverId) VALUES ('${current}','','${senderId}','${sendermsg},'${recieverId}')`,(err,res)=>{
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.send("invited");
+    }
+  })
+  
 })
 function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated())
