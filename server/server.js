@@ -100,7 +100,7 @@ app.get('/home',isLoggedIn,(req,res)=>{
     })
 })
 app.post('/invite',(req,res)=>{
-  console.log(req)
+  console.log(req.body)
   res.send(req.body);
 })
 function isLoggedIn(req, res, next) {
