@@ -54,7 +54,12 @@ passport.use(new FacebookStrategy({
         else{
           console.log("yep");
             let shortId= shortid.generate();
-            client.query(`INSERT INTO users (name, link, email) VALUES ('${profile.displayName}','${shortId}','${pro_email}')`)
+            client.query(`INSERT INTO users (name, link, email) VALUES ('${profile.displayName}','${shortId}','${pro_email}')`,(err,res)=>{
+              if(err){console.log(err)}
+              else{
+                done(null, res);
+              }
+            })
         }
     })
   }
