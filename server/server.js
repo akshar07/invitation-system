@@ -94,7 +94,9 @@ passport.authenticate('facebook',{scope:'email'}));
 app.get('/home',isLoggedIn,(req,res)=>{
   console.log(req.user)
     res.render('home',{
-      
+      name:req.user.rows[0].name,
+      link:req.user.rows[0].link,
+      email:req.user.rows[0].email
     })
 })
 function isLoggedIn(req, res, next) {
