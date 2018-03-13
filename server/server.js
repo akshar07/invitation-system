@@ -107,7 +107,7 @@ app.get('/home',isLoggedIn,(req,res)=>{
 app.post('/invite',(req,res)=>{
   let senderId=req.body.name, sendermsg="Hi you have been invited", recieverId=req.body.to;
   let current= new Date().toLocaleDateString();
-  client.query(`INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,recieverId) VALUES ('${current}','','${senderId}','${sendermsg},'${recieverId}')`,(err,res)=>{
+  client.query(`INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,recieverId) VALUES ('${current}','','${senderId}','${sendermsg}','${recieverId}')`,(err,res)=>{
     if(err){
       console.log(err);
     }
