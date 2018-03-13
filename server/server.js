@@ -41,13 +41,13 @@ passport.use(new FacebookStrategy({
     enableProof: true
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile.emails[0].value);
-    client.query(`SELECT * FROM users`,(err,res)=>{
+    let email=profile.emails[0].value;
+    client.query(`SELECT link FROM users where email=${email}`,(err,res)=>{
         if(err){console.log(err)}
         if(res){ done(null, res);}
         else{
             let shortId= shortid.generate();
-            client.query(`INSERT INTO users (name, link, email) VALUES (${profile.name},${shortId},${profile.email})`)
+            client.query(`INSERT INTO users (name, link, email) VALUES (${profile.displayName},${shortId},${email})`)
         }
     })
   }
