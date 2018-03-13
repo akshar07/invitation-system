@@ -73,7 +73,10 @@ app.use(function(req, res, next) {
 app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
 app.use(express_enforces_ssl());
-app.use(express.bodyParser());
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.get('/', (req, res) =>{ 
     client.query(db_creation_string, (err, res) => {
