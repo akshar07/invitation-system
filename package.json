@@ -10,6 +10,7 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-enforces-ssl": "^1.1.0",
+    "express-session": "^1.15.6",
     "fs": "0.0.1-security",
     "lodash": "^4.17.5",
     "nodemon": "^1.14.12",
