@@ -22,17 +22,19 @@
 
 </div>
 <script>
-    import axios from 'axios';
+    
     function invite(){
         let name=document.getElementById('name').innerHTML;
         let link=document.getElementById('link').innerHTML;
         let inviteTo=document.getElementById('invite_mail').value;
 
-        axios.post('/invite',{
-            name:name,
-            link:link,
-            to:inviteTo
-        }).then((res)=>console.log(res));
+       fetch('/invite',{
+           method:'POST',
+           headers:new Headers(),
+           body:JSON.stringify({
+               name:name,link:link,to:inviteTo
+           })
+       }).then(res=>console.log(res))
     }
 </script>
 </body>
