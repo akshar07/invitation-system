@@ -30,7 +30,9 @@
 
        fetch('/invite',{
            method:'POST',
-           headers:new Headers(),
+           headers:{
+            'content-type': 'application/json'
+        },
            body:JSON.stringify({
                name:name,link:link,to:inviteTo
            })
