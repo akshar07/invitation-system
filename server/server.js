@@ -19,6 +19,17 @@ const client = new Client({
 client.connect();
 const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at timestamp with time zone NOT NULL DEFAULT current_timestamp, updated_at timestamp NOT NULL DEFAULT current_timestamp, senderId TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
+
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+  proxy: true, // add this line
+  cookie: {
+    secure: true,
+    maxAge: 3600000,
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
