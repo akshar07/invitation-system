@@ -14,15 +14,13 @@
             <div class="jumbotron text-center">
                 <h1><span class="fa fa-lock"></span>Your Invitations</h1>
         
-                <!-- <ul>
-                        <% for(var i=0; i<supplies.length; i++) { %>
+                <ul>
+                        <% for(var i=0; i<invites.length; i++) { %>
                             <li>
-                                <a href='supplies/<%= supplies[i] %>'>
-                                    <%= supplies[i] %>
-                                </a>
+                                <p> Sent To <%= invites[i].receiverid %></p>
                             </li>
                         <% } %>
-                    </ul> -->
+                    </ul>
             </div>
         
         </div>
