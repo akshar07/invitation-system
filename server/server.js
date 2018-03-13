@@ -9,13 +9,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 
-
 var port = 3000
-//
-
-//db
 const { Client } = require('pg');
-
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
@@ -24,11 +19,9 @@ const client = new Client({
 client.connect();
 const db_creation_string=`CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at timestamp with time zone NOT NULL DEFAULT current_timestamp, updated_at timestamp NOT NULL DEFAULT current_timestamp, senderId TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
-
 app.use(passport.initialize());
 app.use(passport.session());
 
- 
 passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
@@ -42,12 +35,6 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     let pro_email=profile.emails[0].value;
-   let present= client.query(`SELECT email FROM users WHERE email='${pro_email}'`,(err,res)=>{
-     if(err){console.log(err)}
-     else{
-       console.log(res)
-     }
-   })
     let links=client.query(`SELECT link FROM users WHERE email='${pro_email}'`,(err,res)=>{
         if(err){console.log(err)}
         if(res.rows.length >=1){console.log("ran"); done(null, res);}
@@ -62,6 +49,7 @@ passport.use(new FacebookStrategy({
             })
         }
     })
+    console.log(links)
   }
 ));
 app.use(function(req, res, next) {
@@ -69,8 +57,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-
-
 
 app.enable('trust proxy');
 const express_enforces_ssl = require('express-enforces-ssl');
@@ -94,11 +80,21 @@ failureRedirect: '/auth/facebook' }))
 app.get('/auth/facebook',
 passport.authenticate('facebook',{scope:'email'}));
 
-app.get('/home',(req,res)=>{
+app.get('/home',isLoggedIn,(req,res)=>{
 
-    res.render('home')
+    res.render('home',{
+      user : req.user
+    })
 })
-
+function isLoggedIn(req, res, next) {
+  
+      // if user is authenticated in the session, carry on
+      if (req.isAuthenticated())
+          return next();
+  
+      // if they aren't redirect them to the home page
+      res.redirect('/');
+  }
 app.listen(process.env.PORT, function() {
  console.log('running at localhost: ' + port);
 });
