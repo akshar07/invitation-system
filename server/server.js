@@ -47,7 +47,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     let pro_email=profile.emails[0].value;
-    let links=client.query(`SELECT link FROM users WHERE email='${pro_email}'`,(err,res)=>{
+    client.query(`SELECT link FROM users WHERE email='${pro_email}'`,(err,res)=>{
         if(err){console.log(err)}
         if(res.rows.length >=1){console.log("ran"); done(null, res);}
         else{
@@ -61,7 +61,6 @@ passport.use(new FacebookStrategy({
             })
         }
     })
-    console.log(links)
   }
 ));
 app.use(function(req, res, next) {
@@ -93,8 +92,7 @@ app.get('/auth/facebook',
 passport.authenticate('facebook',{scope:'email'}));
 
 app.get('/home',isLoggedIn,(req,res)=>{
-    console.log(req.user)
-    console.log(req.res)
+    console.log(req.res.rows[0].link)
     res.render('home',{
       user : req.user
     })
