@@ -12,11 +12,23 @@
 <div class="container">
 
     <div class="jumbotron text-center">
-        <h3> Welcome <% name %> </h3>
-        <p>Your Invitation Link is: <%= link %></p>
-   
+        <h3> Welcome <span id="name"><%= name %></span> </h3>
+        <p>Your Invitation Link is: <span id="link"><%= link %></span></p>
+
+        <hr>
+        <input type="email" id="invite_mail">
+        <button onclick="invite()">
     </div>
 
 </div>
+<script>
+    function invite(){
+        let name=document.getElementById('name').innerHTML;
+        let link=document.getElementById('link').innerHTML;
+        let inviteTo=document.getElementById('invite_mail').value;
+
+        alert(name + link + inviteTo)
+    }
+</script>
 </body>
 </html>  
