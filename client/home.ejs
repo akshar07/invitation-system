@@ -13,13 +13,14 @@
 
     <div class="jumbotron text-center">
         <h3> Welcome <span id="name"><%= name %></span> </h3>
+        <p id="currentUser"><%= email %></p>
         <p>Your Invitation Link is: <span id="link"><%= link %></span></p>
 
         <hr>
         <input type="email" id="invite_mail">
-        <button onclick="invite()">
-
-        <a href="/myInvitations" >My Invites</a>
+        <button onclick="invite()"> Invite</button>
+        <br />
+        <button onclick="myInvitations()"> Invite</button>
     </div>
 
 </div>
@@ -39,6 +40,10 @@
                name:name,link:link,to:inviteTo
            })
        }).then(res=>console.log(res))
+    }
+    function myInvitations(){
+       let email=document.getElementById('currentUser').innerHTML;
+       alert(email);
     }
 </script>
 </body>
