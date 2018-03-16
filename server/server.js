@@ -222,6 +222,7 @@ app.get("/invite/:id", (req, res) => {
           console.log("seen updated")
         }
       })
+      console.log(doc.rows)
       res.render("invite", { result: doc.rows[0] });
     }
   });
