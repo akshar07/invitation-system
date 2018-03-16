@@ -216,7 +216,7 @@ app.get("/invite/:id", (req, res) => {
       console.log(err);
     } else {
       console.log(doc);
-      res.render("invite", { result: doc.rows });
+      res.render("invite", { result: doc.rows[0] });
     }
   });
 });
