@@ -6,6 +6,7 @@ var passport = require("passport");
 var shortid = require("shortid");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const bodyParser = require("body-parser");
+var nodemailer = require("nodemailer");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../client"));
