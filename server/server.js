@@ -28,7 +28,7 @@ app.use(
     secret: "secret",
     resave: true,
     saveUninitialized: true,
-    proxy: true, // add this line
+    proxy: true, // add this line1
     cookie: {
       secure: true,
       maxAge: 3600000
