@@ -184,7 +184,7 @@ function sendEmail(_to, _from, _link) {
       pass: "Cinemark@123"
     }
   });
-  let clientUrl = `https://invitation-system.herokuapp.com/invite/${_from}#${_link}`;
+  let clientUrl = `https://invitation-system.herokuapp.com/invite/${_from}-${_link}`;
   var mailOptions = {
     from: "takleakshar@gmail.com",
     to: _to,
@@ -201,8 +201,8 @@ function sendEmail(_to, _from, _link) {
 }
 app.get("/invite/:id", (req, res) => {
   console.log(req.params);
-  let sender = req.params.split("#")[0];
-  let inviteLink = req.params.split("#")[1];
+  let sender = req.params.split("-")[0];
+  let inviteLink = req.params.split("-")[1];
   client.query(
     `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${inviteLink}'`,
     (err, doc) => {
