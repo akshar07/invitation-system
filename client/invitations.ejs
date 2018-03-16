@@ -12,11 +12,12 @@
         <div class="container">
         
             <div class="jumbotron text-center">
-                <h1><span class="fa fa-lock"></span>Your Invitations</h1>
+                <h1>Your Invitations</h1>
         
                 <ul>
                         <% for(var i=0; i<invites.length; i++) { %>
                             <li>
+                                <p> Sent To <%= invites[i].receiverid %></p>
                                 <p> Sent To <%= invites[i].receiverid %></p>
                             </li>
                         <% } %>

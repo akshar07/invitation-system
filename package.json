@@ -25,5 +25,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "1.11.1",
+    "prettier-eslint": "^8.8.1"
+  }
 }

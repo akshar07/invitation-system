@@ -1,50 +1,90 @@
 <!-- views/index.ejs -->
 <html>
+
 <head>
     <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- load fontawesome -->
     <style>
-        body        { padding-top:80px; }
+        body {
+            padding-top: 80px;
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
 
-    <div class="jumbotron text-center">
-        <h3> Welcome <span id="name"><%= name %></span> </h3>
-        <p id="currentUser"><%= email %></p>
-        <p>Your Invitation Link is: <span id="link"><%= link %></span></p>
+        <div class="jumbotron text-center">
+            <h3> Welcome
+                <span id="name">
+                    <%= name %>
+                </span>
+            </h3>
+            <p id="currentUser">
+                <%= email %>
+            </p>
+            <p>Your Invitation Link is:
+                <span id="link">
+                    <%= link %>
+                </span>
+            </p>
 
-        <hr>
-        <input type="email" id="invite_mail">
-        <button onclick="invite()"> Invite</button>
-        <br />
-        <button onclick="myInvitations()"> Invite</button>
+            <hr>
+            <input type="email" id="invite_mail">
+            <br>
+            <label for="message"></label>
+            <textarea id="message"></textarea>
+            <button onclick="invite()"> Invite</button>
+            <br />
+            <button onclick="myInvitations()"> My Invites</button>
+            <br />
+            <ul id="myInvites">
+
+            </ul>
+        </div>
+
     </div>
+    <script>
+        function invite() {
+            let sender = document.getElementById('currentUser').innerHTML;
+            let link = document.getElementById('link').innerHTML;
+            let inviteTo = document.getElementById('invite_mail').value;
+            let message = document.getElementById('message').value;
+            fetch('/invite', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: sender,
+                    link: link,
+                    to: inviteTo,
+                    msg: message
+                })
+            }).then(res => console.log(res))
+        }
 
-</div>
-<script>
-    
-    function invite(){
-        let name=document.getElementById('name').innerHTML;
-        let link=document.getElementById('link').innerHTML;
-        let inviteTo=document.getElementById('invite_mail').value;
-
-       fetch('/invite',{
-           method:'POST',
-           headers:{
-            'content-type': 'application/json'
-        },
-           body:JSON.stringify({
-               name:name,link:link,to:inviteTo
-           })
-       }).then(res=>console.log(res))
-    }
-    function myInvitations(){
-       let email=document.getElementById('currentUser').innerHTML;
-       alert(email);
-    }
-</script>
+        function myInvitations() {
+            let email = document.getElementById('currentUser').innerHTML;
+            fetch('/myInvitations', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            }).then(res => {
+                let node = document.createElement("LI"); // Create a <li> node
+                let textnode = document.createTextNode(res); // Create a text node
+                node.appendChild(textnode); // Append the text to <li>
+                document.getElementById("myInvites").appendChild(node);
+            })
+        }
+    </script>
 </body>
-</html>  
+
+</html>
