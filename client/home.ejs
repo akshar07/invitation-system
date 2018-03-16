@@ -64,7 +64,7 @@
         }
         // function to get all the invitations
         function myInvitations() {
-            if(!document.getElementById('myInvites').hasChildNodes()){
+            if(document.getElementById('myInvites').hasChildNodes()==false){
                 let link = document.getElementById('link').innerHTML;
                 fetch(`/myInvitations?link=${link}`).then(res => res.json()).then(invites => {
                     invites.forEach(invite => {
