@@ -144,7 +144,7 @@ app.post("/invite", (req, res) => {
     senderName = req.body.name;
   let current = new Date().toLocaleDateString();
   client.query(
-    `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${senderName}',${receiverId}')`,
+    `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -189,7 +189,7 @@ function sendEmail(_to, _from, _link) {
     from: "takleakshar@gmail.com",
     to: _to,
     subject: "You have been Invited to Awesome App",
-    html: `<p> Your invitation link is: <a href='${clientUrl}'> ${clientUrl}</a>'`
+    html: `<p> Your invitation link is: <a href='${clientUrl}'> ${clientUrl}</a>`
   };
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
