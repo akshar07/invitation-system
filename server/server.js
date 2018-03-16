@@ -142,7 +142,7 @@ app.post("/invite", (req, res) => {
     receiverId = req.body.to,
     newLink = shortid.generate();
     senderName = req.body.name;
-  let current = new Date().toString()
+  let current = new Date().toISOString()
   client.query(
     `INSERT INTO invitations (created_at,updated_at, link, senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${newLink}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
     (err, result) => {
@@ -217,7 +217,7 @@ app.get("/invite/:id", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      let seen=new Date().toString();
+      let seen=new Date().toISOString();
       client.query(`UPDATE invitations SET updated_at='${seen}' WHERE senderid='${sender}' AND link='${inviteLink}'`,(err,doc)=>{
         if(err){return console.log(err)}
         else{
