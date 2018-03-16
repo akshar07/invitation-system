@@ -159,7 +159,7 @@ app.get("/myInvitations", (req, res) => {
         console.log(err);
       } else {
         console.log(doc);
-        res.send("invitations", { invites: doc.rows });
+        res.status(200).send("invitations", { invites: doc.rows });
       }
     }
   );
