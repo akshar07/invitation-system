@@ -73,7 +73,7 @@
             fetch('/myInvitations', {
                 email: email
             }).then(res => {
-                console.log(res)
+                console.log(res.json())
                 let node = document.createElement("LI"); // Create a <li> node
                 let textnode = document.createTextNode(res); // Create a text node
                 node.appendChild(textnode); // Append the text to <li>
