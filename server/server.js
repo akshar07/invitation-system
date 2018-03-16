@@ -229,6 +229,10 @@ app.get("/invite/:id", (req, res) => {
     }
   });
 });
+app.get('/logout',(req,res)=>{
+  req.logout();
+  res.redirect('/');
+})
 app.listen(process.env.PORT, function() {
   console.log("running at localhost: " + port);
 });
