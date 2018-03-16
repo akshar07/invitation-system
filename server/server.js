@@ -215,7 +215,13 @@ app.get("/invite/:id", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(doc);
+      let seen=new Date().toLocaleDateString();
+      client.query(`UPDATE invitations SET updated_at=${seen} WHERE WHERE senderid='${sender}' AND link='${inviteLink}'`,(err,doc)=>{
+        if(err){return console.log(err)}
+        else{
+          console.log("seen updated")
+        }
+      })
       res.render("invite", { result: doc.rows[0] });
     }
   });
