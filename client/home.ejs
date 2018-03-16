@@ -48,6 +48,7 @@
 
     </div>
     <script>
+        //function to send invite
         function invite() {
             let sender = document.getElementById('currentUser').innerHTML;
             let link = document.getElementById('link').innerHTML;
@@ -66,13 +67,13 @@
                 })
             }).then(res => console.log(res))
         }
-
+        // function to get all the invitations
         function myInvitations() {
             let email = document.getElementById('currentUser').innerHTML;
             fetch('/myInvitations', {
                 email: email
-            }).then(res => {
-                console.log(res.json())
+            }).then(res => res.json()).then(res => {
+                console.log()
                 let node = document.createElement("LI"); // Create a <li> node
                 let textnode = document.createTextNode(res); // Create a text node
                 node.appendChild(textnode); // Append the text to <li>
