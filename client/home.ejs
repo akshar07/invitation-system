@@ -80,8 +80,9 @@
         }
 
         function addToList(_to, _date) {
+            let date = new Date(_date).toLocaleDateString();
             let node = document.createElement("LI"); // Create a <li> node
-            let textnode = document.createTextNode(`${_to} - ${_date}`); // Create a text node
+            let textnode = document.createTextNode(`${_to} - ${date}`); // Create a text node
             node.appendChild(textnode); // Append the text to <li>
             document.getElementById("myInvites").appendChild(node);
         }
