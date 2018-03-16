@@ -65,7 +65,7 @@
         // function to get all the invitations
         function myInvitations() {
             let link = document.getElementById('link').innerHTML;
-            fetch(`/myInvitations?link:${link}`).then(res => res.json()).then(invites => {
+            fetch(`/myInvitations?link=${link}`).then(res => res.json()).then(invites => {
                 invites.forEach(invite => {
                     addToList(invite.receiverid, invite.created_at, invite.updated_at)
                 });
