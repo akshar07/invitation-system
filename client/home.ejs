@@ -22,7 +22,7 @@
                 <span id="name"><%= name %></span>
             </h3>
             <p id="currentUser"><%= email %></p>
-            <p>Your Invitation Link is:
+            <p>Your Invitation Code is:
                 <span id="link"><%= link %></span>
             </p>
             <hr>
@@ -64,7 +64,7 @@
         }
         // function to get all the invitations
         function myInvitations() {
-            if(document.getElementById('myInvites').hasChildNodes()==false){
+            if(document.getElementById('myInvites').children.length===0){
                 let link = document.getElementById('link').innerHTML;
                 fetch(`/myInvitations?link=${link}`).then(res => res.json()).then(invites => {
                     invites.forEach(invite => {
