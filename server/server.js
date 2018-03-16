@@ -138,7 +138,8 @@ app.get("/home", isLoggedIn, (req, res) => {
 app.post("/invite", (req, res) => {
   let senderId = req.body.name,
     sendermsg = req.body.msg,
-    receiverId = req.body.to;
+    receiverId = req.body.to,
+    link = req.body.link;
   let current = new Date().toLocaleDateString();
   client.query(
     `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${receiverId}')`,
@@ -146,6 +147,7 @@ app.post("/invite", (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        sendEmail(receiverId, senderId, link);
         res.send("invited");
       }
     }
@@ -171,6 +173,29 @@ function isLoggedIn(req, res, next) {
 
   // if they aren't redirect them to the home page
   res.redirect("/");
+}
+function sendEmail(_to, _from, _link) {
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "cinemarkbooking@gmail.com",
+      pass: "Cinemark@123"
+    }
+  });
+  let clientUrl = `https://invitation-system.herokuapp.com$/invite/${_from}#${_link}`;
+  var mailOptions = {
+    from: "takleakshar@gmail.com",
+    to: _to,
+    subject: "You have been Invited to Awesome App",
+    html: `<p> Your invitation link is: <a href='${clientUrl}'> ${clientUrl}</a>`
+  };
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 }
 app.listen(process.env.PORT, function() {
   console.log("running at localhost: " + port);
