@@ -211,7 +211,7 @@ app.get("/invite/:id", (req, res) => {
     .trim();
   console.log(sender);
   console.log(inviteLink);
-  client.query(`SELECT * FROM invitations`, (err, doc) => {
+  client.query(`SELECT * FROM invitations WHERE senderid='${sender}' AND link='${inviteLink}'`, (err, doc) => {
     if (err) {
       console.log(err);
     } else {
