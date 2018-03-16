@@ -216,7 +216,7 @@ app.get("/invite/:id", (req, res) => {
       console.log(err);
     } else {
       let seen=new Date().toLocaleDateString();
-      client.query(`UPDATE invitations SET updated_at='${seen}' WHERE WHERE senderid='${sender}' AND link='${inviteLink}'`,(err,doc)=>{
+      client.query(`UPDATE invitations SET updated_at='${seen}' WHERE senderid='${sender}' AND link='${inviteLink}'`,(err,doc)=>{
         if(err){return console.log(err)}
         else{
           console.log("seen updated")
