@@ -200,6 +200,7 @@ function sendEmail(_to, _from, _link) {
   });
 }
 app.get("/invite/:id", (req, res) => {
+  console.log(req.params);
   let sender = req.params.split("#")[0];
   let inviteLink = req.params.split("#")[1];
   client.query(
