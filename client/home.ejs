@@ -72,13 +72,18 @@
             let email = document.getElementById('currentUser').innerHTML;
             fetch('/myInvitations', {
                 email: email
-            }).then(res => {
-                console.log(res.json())
-                let node = document.createElement("LI"); // Create a <li> node
-                let textnode = document.createTextNode(res); // Create a text node
-                node.appendChild(textnode); // Append the text to <li>
-                document.getElementById("myInvites").appendChild(node);
+            }).then(res => res.json()).then(invites => {
+                invites.array.forEach(invite => {
+                    addToList(invite.receiverid, invite.created_at)
+                });
             })
+        }
+
+        function addToList(_to, _date) {
+            let node = document.createElement("LI"); // Create a <li> node
+            let textnode = document.createTextNode(`${_to} - ${_date}`); // Create a text node
+            node.appendChild(textnode); // Append the text to <li>
+            document.getElementById("myInvites").appendChild(node);
         }
     </script>
 </body>
