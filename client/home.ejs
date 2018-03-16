@@ -70,7 +70,7 @@
         function myInvitations() {
             let email = document.getElementById('currentUser').innerHTML;
             fetch('/myInvitations', {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'content-type': 'application/json'
                 },
