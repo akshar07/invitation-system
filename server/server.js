@@ -211,17 +211,14 @@ app.get("/invite/:id", (req, res) => {
     .trim();
   console.log(sender);
   console.log(inviteLink);
-  client.query(
-    `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${inviteLink}'`,
-    (err, doc) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(doc);
-        res.render("invite", { result: doc.rows });
-      }
+  client.query(`SELECT * FROM invitations`, (err, doc) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(doc);
+      res.render("invite", { result: doc.rows });
     }
-  );
+  });
 });
 app.listen(process.env.PORT, function() {
   console.log("running at localhost: " + port);
