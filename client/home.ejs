@@ -54,16 +54,18 @@
             let link = document.getElementById('link').innerHTML;
             let inviteTo = document.getElementById('invite_mail').value;
             let message = document.getElementById('message').value;
+            let name = document.getElementById('name').innerHTML;
             fetch('/invite', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: sender,
+                    sender: sender,
                     link: link,
                     to: inviteTo,
-                    msg: message
+                    msg: message,
+                    name: name
                 })
             }).then(res => console.log(res))
         }

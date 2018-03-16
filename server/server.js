@@ -20,7 +20,7 @@ const client = new Client({
 });
 
 client.connect();
-const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, senderId TEXT, sendermsg TEXT, receiverId TEXT);
+const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, senderId TEXT, sendermsg TEXT, senderName TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
 
 app.use(
@@ -137,13 +137,14 @@ app.get("/home", isLoggedIn, (req, res) => {
   });
 });
 app.post("/invite", (req, res) => {
-  let senderId = req.body.name,
+  let senderId = req.body.sender,
     sendermsg = req.body.msg,
     receiverId = req.body.to,
-    link = req.body.link;
+    link = req.body.link,
+    senderName = req.body.name;
   let current = new Date().toLocaleDateString();
   client.query(
-    `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${receiverId}')`,
+    `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${senderName}',${receiverId}')`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -183,7 +184,7 @@ function sendEmail(_to, _from, _link) {
       pass: "Cinemark@123"
     }
   });
-  let clientUrl = `https://invitation-system.herokuapp.com$/invite/${_from}#${_link}`;
+  let clientUrl = `https://invitation-system.herokuapp.com/invite/${_from}#${_link}`;
   var mailOptions = {
     from: "takleakshar@gmail.com",
     to: _to,
@@ -198,6 +199,10 @@ function sendEmail(_to, _from, _link) {
     }
   });
 }
+app.get("/invite/:id", (req, res) => {
+  let link = req.params;
+  res.render("invite", { msg: "hi" });
+});
 app.listen(process.env.PORT, function() {
   console.log("running at localhost: " + port);
 });
