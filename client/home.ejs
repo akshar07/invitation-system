@@ -73,7 +73,7 @@
             fetch('/myInvitations', {
                 email: email
             }).then(res => res.json()).then(invites => {
-                invites.array.forEach(invite => {
+                invites.forEach(invite => {
                     addToList(invite.receiverid, invite.created_at)
                 });
             })
