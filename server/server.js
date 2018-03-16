@@ -20,7 +20,7 @@ const client = new Client({
 });
 
 client.connect();
-const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, senderId TEXT, sendermsg TEXT, senderName TEXT, receiverId TEXT);
+const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, link TEXT, senderId TEXT, sendermsg TEXT, senderName TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
 
 app.use(
@@ -144,7 +144,7 @@ app.post("/invite", (req, res) => {
     senderName = req.body.name;
   let current = new Date().toLocaleDateString();
   client.query(
-    `INSERT INTO invitations (created_at,updated_at,senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
+    `INSERT INTO invitations (created_at,updated_at, link, senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${link}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -201,7 +201,18 @@ function sendEmail(_to, _from, _link) {
 }
 app.get("/invite/:id", (req, res) => {
   let link = req.params;
-  res.render("invite", { msg: "hi" });
+  let sender = req.params.split("#")[0];
+  let link = req.params.split("#")[1];
+  client.query(
+    `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${link}'`,
+    (err, doc) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("invite", { result: doc.rows });
+      }
+    }
+  );
 });
 app.listen(process.env.PORT, function() {
   console.log("running at localhost: " + port);
