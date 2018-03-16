@@ -45,8 +45,8 @@ passport.deserializeUser((user, done) => done(null, user));
 passport.use(
   new FacebookStrategy(
     {
-      clientID: "340100819812558",
-      clientSecret: "534199fb0a8251d6de3c0bd16bdb7914",
+      clientID: process.env.clientID,
+      clientSecret: process.env.clientSecret,
       callbackURL:
         "https://invitation-system.herokuapp.com/auth/facebook/callback",
       profileFields: ["id", "displayName", "photos", "email"],
@@ -103,7 +103,7 @@ app.use(
     extended: true
   })
 );
-
+//home route
 app.get("/", (req, res) => {
   client.query(db_creation_string, (err, res) => {
     if (err) {
@@ -114,7 +114,7 @@ app.get("/", (req, res) => {
   });
   res.render("index");
 });
-
+//facebook call back url
 app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
@@ -127,7 +127,7 @@ app.get(
   "/auth/facebook",
   passport.authenticate("facebook", { scope: "email" })
 );
-
+//after authentication
 app.get("/home", isLoggedIn, (req, res) => {
   console.log(req.user);
   res.render("home", {
@@ -136,6 +136,7 @@ app.get("/home", isLoggedIn, (req, res) => {
     email: req.user.rows[0].email
   });
 });
+//invite route
 app.post("/invite", (req, res) => {
   let senderId = req.body.link,
     sendermsg = req.body.msg,
@@ -155,6 +156,7 @@ app.post("/invite", (req, res) => {
     }
   );
 });
+// user invitations
 app.get("/myInvitations", (req, res) => {
   let link=req.query.link
   console.log(link)
@@ -170,6 +172,7 @@ app.get("/myInvitations", (req, res) => {
     }
   );
 });
+//middleware for cheking logged in session
 function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated());
   // if user is authenticated in the session, carry on
@@ -178,12 +181,13 @@ function isLoggedIn(req, res, next) {
   // if they aren't redirect them to the home page
   res.redirect("/");
 }
+//send email function
 function sendEmail(_to, _from, _link) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "cinemarkbooking@gmail.com",
-      pass: "Cinemark@123"
+      user: process.ENV.email,
+      pass: process.env.password
     }
   });
   let clientUrl = `https://invitation-system.herokuapp.com/invite/${_from}-${_link}`;
@@ -201,6 +205,7 @@ function sendEmail(_to, _from, _link) {
     }
   });
 }
+// invitation view
 app.get("/invite/:id", (req, res) => {
   console.log(req.params);
   let sender = req.params.id
@@ -229,6 +234,7 @@ app.get("/invite/:id", (req, res) => {
     }
   });
 });
+//logout
 app.get('/logout',(req,res)=>{
   req.logout();
   res.redirect('/');
