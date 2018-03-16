@@ -137,19 +137,19 @@ app.get("/home", isLoggedIn, (req, res) => {
   });
 });
 app.post("/invite", (req, res) => {
-  let senderId = req.body.sender,
+  let senderId = req.body.link,
     sendermsg = req.body.msg,
     receiverId = req.body.to,
-    link = req.body.link,
+    newLink = shortid.generate();
     senderName = req.body.name;
   let current = new Date().toLocaleDateString();
   client.query(
-    `INSERT INTO invitations (created_at,updated_at, link, senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${link}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
+    `INSERT INTO invitations (created_at,updated_at, link, senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${newLink}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        sendEmail(receiverId, senderId, link);
+        sendEmail(receiverId, senderId, newLink);
         res.send("invited");
       }
     }
