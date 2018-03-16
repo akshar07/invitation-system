@@ -29,12 +29,12 @@
             <input type="email" id="invite_mail">
             <br>
             <label for="message"></label>
-            <textarea id="message"></textarea>
+            <input id="message"></input>
             <button onclick="invite()"> Invite</button>
             <br />
-            <button onclick="myInvitations()"> My Invites</button>
+            <button onclick="myInvitations()" style="margin-top:20px;"> My Invites</button>
             <br />
-            <ul id="myInvites">
+            <ul id="myInvites" style="list-style:none;">
 
             </ul>
         </div>
@@ -64,12 +64,14 @@
         }
         // function to get all the invitations
         function myInvitations() {
-            let link = document.getElementById('link').innerHTML;
-            fetch(`/myInvitations?link=${link}`).then(res => res.json()).then(invites => {
-                invites.forEach(invite => {
-                    addToList(invite.receiverid, invite.created_at, invite.updated_at)
-                });
-            })
+            if(!document.getElementById('myInvites').hasChildNodes()){
+                let link = document.getElementById('link').innerHTML;
+                fetch(`/myInvitations?link=${link}`).then(res => res.json()).then(invites => {
+                    invites.forEach(invite => {
+                        addToList(invite.receiverid, invite.created_at, invite.updated_at)
+                    });
+                })
+            }
         }
 
         function addToList(_to, _sent, _seen) {
