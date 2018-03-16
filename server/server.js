@@ -200,11 +200,10 @@ function sendEmail(_to, _from, _link) {
   });
 }
 app.get("/invite/:id", (req, res) => {
-  let link = req.params;
   let sender = req.params.split("#")[0];
-  let link = req.params.split("#")[1];
+  let inviteLink = req.params.split("#")[1];
   client.query(
-    `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${link}'`,
+    `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${inviteLink}'`,
     (err, doc) => {
       if (err) {
         console.log(err);
