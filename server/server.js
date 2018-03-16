@@ -158,7 +158,7 @@ app.post("/invite", (req, res) => {
 app.get("/myInvitations", (req, res) => {
   let link=req.body.link;
   client.query(
-    `SELECT * from invitations`,
+    `SELECT * from invitations where link='${link}'`,
     (err, doc) => {
       if (err) {
         console.log(err);
