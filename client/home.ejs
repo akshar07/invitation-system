@@ -70,13 +70,7 @@
         function myInvitations() {
             let email = document.getElementById('currentUser').innerHTML;
             fetch('/myInvitations', {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email
-                })
+                email: email
             }).then(res => {
                 console.log(res)
                 let node = document.createElement("LI"); // Create a <li> node
