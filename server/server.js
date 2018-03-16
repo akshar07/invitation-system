@@ -203,6 +203,8 @@ app.get("/invite/:id", (req, res) => {
   console.log(req.params);
   let sender = req.params.id.trim().split("-")[0];
   let inviteLink = req.params.id.trim().split("-")[1];
+  console.log(sender);
+  console.log(inviteLink);
   client.query(
     `SELECT * FROM invitations WHERE senderId='${sender}' AND link='${inviteLink}'`,
     (err, doc) => {
