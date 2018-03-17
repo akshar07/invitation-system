@@ -185,6 +185,7 @@ function isLoggedIn(req, res, next) {
 }
 //send email function
 function sendEmail(_to, _from, _link) {
+  console.log(process.env.email)
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
