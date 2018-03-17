@@ -22,7 +22,7 @@ const client = new Client({
 client.connect();
 const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, link TEXT, senderId TEXT, sendermsg TEXT, senderName TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
-
+//maintain a session
 app.use(
   session({
     secret: "secret",
@@ -53,16 +53,17 @@ passport.use(
       enableProof: true
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log(profile)
       let pro_email = profile.emails[0].value;
       client.query(
         `SELECT * FROM users WHERE email='${pro_email}'`,
-        (err, res) => {
+        (err, doc) => {
           if (err) {
             console.log(err);
           }
-          if (res.rows.length >= 1) {
+          if (doc.rows.length >= 1) { 
             console.log("ran");
-            done(null, res);
+            done(null, doc);
           } else {
             console.log("yep");
             let shortId = shortid.generate();
@@ -70,12 +71,11 @@ passport.use(
               `INSERT INTO users (name, link, email) VALUES ('${
                 profile.displayName
               }','${shortId}','${pro_email}')`,
-              (err, res) => {
+              (err, doc) => {
                 if (err) {
                   console.log(err);
                 } else {
-
-                  done(null, res,{message: 'Please Login by clicking the facebook button'});
+                  done(null, doc,{message: 'Please Login by clicking the facebook button'});
                 }
               }
             );
@@ -179,7 +179,6 @@ function isLoggedIn(req, res, next) {
   console.log(req.isAuthenticated());
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();
-
   // if they aren't redirect them to the home page
   res.redirect("/");
 }
