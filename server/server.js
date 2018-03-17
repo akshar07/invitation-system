@@ -74,7 +74,8 @@ passport.use(
                 if (err) {
                   console.log(err);
                 } else {
-                  done(null, res);
+
+                  done(null, res,{message: 'Please Login by clicking the facebook button'});
                 }
               }
             );
@@ -119,7 +120,8 @@ app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
     successRedirect: "/home",
-    failureRedirect: "/auth/facebook"
+    failureRedirect: "/auth/facebook",
+    successFlash: true
   })
 );
 
@@ -186,7 +188,7 @@ function sendEmail(_to, _from, _link) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.ENV.email,
+      user: process.env.email,
       pass: process.env.password
     }
   });
