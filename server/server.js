@@ -59,7 +59,7 @@ passport.use(
         `SELECT * FROM users WHERE email='${pro_email}'`,
         (err, doc) => {
           if (err) {
-            console.log(err);
+            console.log(err); 
           }
           if (doc.rows.length >= 1) { 
             console.log("ran");
