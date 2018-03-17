@@ -75,7 +75,7 @@ passport.use(
                 if (err) {
                   console.log(err);
                 } else {
-                  done(null, doc,{message: 'Please Login by clicking the facebook button'});
+                  done(null, doc);
                 }
               }
             );
@@ -121,7 +121,6 @@ app.get(
   passport.authenticate("facebook", {
     successRedirect: "/home",
     failureRedirect: "/auth/facebook",
-    successFlash: true
   })
 );
 
