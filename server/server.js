@@ -195,7 +195,7 @@ function sendEmail(_to, _from, _link) {
   });
   let clientUrl = `https://invitation-system.herokuapp.com/invite/${_from}-${_link}`;
   var mailOptions = {
-    from: "takleakshar@gmail.com",
+    from: "akshartakle.aiesec@gmail.com",
     to: _to,
     subject: "You have been Invited to Awesome App",
     html: `<p> Your invitation link is: <a href='${clientUrl}'> ${clientUrl}</a>`
