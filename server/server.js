@@ -73,7 +73,7 @@ passport.use(
               }','${shortId}','${pro_email}')`,
               (err, doc) => {
                 if (err) {
-                  console.log(err);
+                  console.log(err); 
                 } else {
                   done(null, {name:profile.displayName,link:shortid,email:pro_email}); 
                 }
