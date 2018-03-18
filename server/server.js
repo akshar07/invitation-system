@@ -67,6 +67,9 @@ passport.use(
           } else {
             console.log("yep");
             let shortId = shortid.generate();
+            while(shortId.indexOf('-')>=0){
+              shortId = shortid.generate();
+            }
             client.query(
               `INSERT INTO users (name, link, email) VALUES ('${
                 profile.displayName
