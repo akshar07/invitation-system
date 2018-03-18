@@ -75,7 +75,7 @@ passport.use(
                 if (err) {
                   console.log(err); 
                 } else {
-                  done(null, {rows:[{name:profile.displayName,link:shortid,email:pro_email}]}); 
+                  done(null, {rows:[{name:profile.displayName,link:shortId,email:pro_email}]}); 
                 }
               }
             );
