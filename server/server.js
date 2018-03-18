@@ -53,7 +53,7 @@ passport.use(
       enableProof: true
     },
     function(accessToken, refreshToken, profile, done) {
-      console.log(profile)
+      // console.log(profile)
       let pro_email = profile.emails[0].value;
       client.query(
         `SELECT * FROM users WHERE email='${pro_email}'`,
@@ -130,6 +130,7 @@ app.get(
 );
 //after authentication
 app.get("/home", isLoggedIn, (req, res) => {
+  console.log("user:")
   console.log(req.user);
   res.render("home", {
     name: req.user.rows[0].name,
