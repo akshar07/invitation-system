@@ -2,23 +2,22 @@ const express = require("express");
 const app = express();
 var session = require("express-session");
 const path = require("path");
-var passport = require("passport");
-var shortid = require("shortid");
+const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
+var shortid = require("shortid");
 const bodyParser = require("body-parser");
 var nodemailer = require("nodemailer");
-
+//set our client folder and view
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../client"));
 app.use(express.static(path.join(__dirname, "../client")));
-
-var port = 3000;
+//database connections
 const { Client } = require("pg");
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
-
+//connection query and creation tables
 client.connect();
 const db_creation_string = `CREATE TABLE IF NOT EXISTS invitations(id SERIAL PRIMARY KEY, created_at TIMESTAMP, updated_at TIMESTAMP, link TEXT, senderId TEXT, sendermsg TEXT, senderName TEXT, receiverId TEXT);
                         CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name TEXT, link TEXT, email TEXT);`;
@@ -28,20 +27,21 @@ app.use(
     secret: "secret",
     resave: true,
     saveUninitialized: true,
-    proxy: true, // add this line1
+    proxy: true,
     cookie: {
       secure: true,
       maxAge: 3600000
     }
   })
 );
+//initialize passport app
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
-//shortid
+//passport middleware
 passport.use(
   new FacebookStrategy(
     {
@@ -53,7 +53,8 @@ passport.use(
       enableProof: true
     },
     function(accessToken, refreshToken, profile, done) {
-      // console.log(profile)
+      //we get the above 4 things from facebook
+      //first we will check if the user is in our database. If not we will add the user and give done callback.
       let pro_email = profile.emails[0].value;
       client.query(
         `SELECT * FROM users WHERE email='${pro_email}'`,
@@ -88,6 +89,7 @@ passport.use(
     }
   )
 );
+//allow cross origin requests
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -107,7 +109,7 @@ app.use(
     extended: true
   })
 );
-//home route
+//index route
 app.get("/", (req, res) => {
   client.query(db_creation_string, (err, res) => {
     if (err) {
@@ -131,9 +133,8 @@ app.get(
   "/auth/facebook",
   passport.authenticate("facebook", { scope: "email" })
 );
-//after authentication
+//after authentication - home route
 app.get("/home", isLoggedIn, (req, res) => {
-  console.log("user:")
   console.log(req.user);
   res.render("home", {
     name: req.user.rows[0].name,
@@ -153,7 +154,7 @@ app.post("/invite", (req, res) => {
     `INSERT INTO invitations (created_at,updated_at, link, senderId,sendermsg,senderName,receiverId) VALUES ('${current}','${current}','${newLink}','${senderId}','${sendermsg}','${senderName}','${receiverId}')`,
     (err, result) => {
       if (err) {
-        console.log(err);
+        return console.log(err);
       } else {
         sendEmail(receiverId, senderId, newLink);
         res.send("invited");
@@ -204,7 +205,7 @@ function sendEmail(_to, _from, _link) {
   };
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
-      console.log(error);
+      return console.log(error);
     } else {
       console.log("Email sent: " + info.response);
     }
